@@ -26,11 +26,11 @@ const (
 //New - creates a new cloud controller client
 func New(loginurl, user, pass string, client ClientDoer) *Client {
 	return &Client{
-		loginurl:   loginurl,
-		user:       user,
-		pass:       pass,
-		client:     client,
-		StringData: false,
+		loginurl:     loginurl,
+		user:         user,
+		pass:         pass,
+		client:       client,
+		isStringData: false,
 	}
 }
 
@@ -52,7 +52,7 @@ type (
 		pass         string
 		loginurl     string
 		client       ClientDoer
-		StringData   bool
+		isStringData bool
 	}
 )
 
@@ -90,12 +90,16 @@ func (s *Client) CreateAuthRequest(verb, requestURL, path string, args map[strin
 	return req, err
 }
 
+func (s *Client) ParseDataAsString(b bool) {
+	s.isStringData = b
+}
+
 func (s *Client) createRequestData(requestURL string, path string, postData map[string]string) (apiUrl string, dataBuf *bytes.Buffer) {
 	data := url.Values{}
 
 	if postData != nil {
 
-		if s.StringData {
+		if s.isStringData {
 
 			for _, v := range postData {
 				dataBuf = bytes.NewBufferString(v)
