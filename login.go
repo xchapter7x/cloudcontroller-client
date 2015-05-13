@@ -72,7 +72,7 @@ func (s *Client) Login() (*Client, error) {
 
 //CreateRequest - Creates a request object targeted at the cloud controller
 func (s *Client) CreateRequest(verb, requestURL, path string, args map[string]string) (*http.Request, error) {
-	urlStr, dataBuf := s.createRequestData(requestURL, RouteLogin, args)
+	urlStr, dataBuf := s.createRequestData(requestURL, path, args)
 	return http.NewRequest(verb, urlStr, dataBuf)
 }
 
