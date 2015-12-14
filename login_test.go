@@ -17,6 +17,27 @@ var _ = Describe("New cloud controller client", func() {
 		sampleUser                     = "randomeuser@pivotal.io"
 		samplePass                     = "mypass"
 	)
+	Describe("given a AccessTokenDecorate method", func() {
+		Context("when called with a request object", func() {
+			var (
+				request            *http.Request
+				controlAccessToken = "testtoken"
+				controlTokenType   = "faketype"
+			)
+
+			BeforeEach(func() {
+				request, _ = http.NewRequest("GET", "", nil)
+				client := new(Client)
+				client.AccessToken = controlAccessToken
+				client.TokenType = controlTokenType
+				client.AccessTokenDecorate(request)
+			})
+			It("then the request object should get decorated with a accesstoken from the client", func() {
+				controlValue := fmt.Sprintf("%s %s", controlTokenType, controlAccessToken)
+				Ω(request.Header.Get(HeaderAuth)).Should(Equal(controlValue))
+			})
+		})
+	})
 
 	Context("when calling login w/ valid arguments", func() {
 		var (
