@@ -83,6 +83,7 @@ func (s *Client) HttpClient() ClientDoer {
 	return s.client
 }
 
+//AccessTokenDecorate - will decorate the given http.Request with the clients accesstoken aquired during the Login call
 func (s *Client) AccessTokenDecorate(req *http.Request) {
 	req.Header.Add(HeaderAuth, fmt.Sprintf("%s %s", s.TokenType, s.AccessToken))
 }
